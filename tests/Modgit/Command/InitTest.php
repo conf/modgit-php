@@ -31,6 +31,10 @@ class InitTest extends \PHPUnit_Framework_TestCase
 
     public function testInitCommandShouldThrowExceptionWhenMkdirReturnsFalse()
     {
+        if ($this->isWindows()) {
+            $this->markTestSkipped('This test is not supported on Windows.');
+        }
+
         $oldCurrentDirectory = getcwd();
         $tempDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid();
         mkdir($tempDir);
@@ -45,4 +49,10 @@ class InitTest extends \PHPUnit_Framework_TestCase
             DirectoryHelper::removeRecursively($tempDir);
         }
     }
+
+    private function isWindows()
+    {
+        return '\\' === DIRECTORY_SEPARATOR;
+    }
+
 }
